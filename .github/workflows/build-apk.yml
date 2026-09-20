@@ -24,7 +24,7 @@ jobs:
           cache: gradle
 
       - name: Build APK
-        working-directory: project
+        working-directory: project/AUTOMEXANICA-v14-cloud-build
         run: |
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace
@@ -33,6 +33,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: AUTOMEXANICA-v14-APK
-          path: project/app/build/outputs/apk/debug/*.apk
+          path: project/project/AUTOMEXANICA-v14-cloud-build/app/build/outputs/apk/debug/*.apk
           if-no-files-found: error
           retention-days: 14
