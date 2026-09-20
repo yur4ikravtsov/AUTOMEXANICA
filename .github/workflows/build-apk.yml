@@ -1,0 +1,38 @@
+name: Build AUTOMEXANICA APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract AUTOMEXANICA project
+        run: |
+          mkdir project
+          unzip -q AUTOMEXANICA-v14-cloud-build.zip -d project
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Build APK
+        working-directory: project
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AUTOMEXANICA-v14-APK
+          path: project/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
